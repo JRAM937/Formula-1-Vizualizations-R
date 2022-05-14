@@ -33,27 +33,30 @@ Description of data and problem(s) you are solving.  Include data source(s) here
 
 ## Graphic 1
 Provide a brief description of your goal with your created graphic and what it demonstrates
+
+For this problem, we are trying to find out which of the fastest drivers in Qualifying round #3 had the most wins in a specific course. 
+
 ```{r}
 #include code for any data manipulation and variable creation used to create the graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
 qualifying_times %>% 
-  mutate(q3 = replace(q3, q3 == "\\N", "0.0")) %>% 
-  filter(raceId == "17") %>% 
-  select(driverId, q3) %>% 
-  filter(q3 != "0.0") %>% 
-  arrange(q3) %>% 
-  write_csv("clean_times.csv")
+  mutate(q3 = replace(q3, q3 == "\\N", "0.0")) %>% #replaces \\N with 0.0 in the qualifying time #3
+  filter(raceId == "17") %>% #filters to just get raceId's 17
+  select(driverId, q3) %>% #selects just the driverId and q3
+  filter(q3 != "0.0") %>% #filters anything that doesn't have a time of 0.0 for q3
+  arrange(q3) %>% #arranges the data
+  write_csv("clean_times.csv") #writes a new csv file
 ```
 
 ```{r}
 driver_standings %>% 
-  filter(raceId == "17") %>% 
-  mutate(label = driverId) %>% 
-  write_csv("clean_drivers.csv") %>% 
+  filter(raceId == "17") %>% #filters anything with raceId = 17
+  mutate(label = driverId) %>%  #makes a new column called label with driverId's
+  write_csv("clean_drivers.csv") %>% #writes csv file
   
-  top_n(3, wins) %>%
-  ggplot(aes(x = driverId, y = wins)) +
-  geom_col(aes(fill = wins, x = reorder(driverId, wins), y = wins), show.legend = FALSE) +
-  labs(title = "Fastest Q3 Drivers' wins in Abhu Dhabi GP (any year)")
+  top_n(3, wins) %>% #gets the top 3 of wins
+  ggplot(aes(x = driverId, y = wins)) + #starts the ggplot
+  geom_col(aes(fill = wins, x = reorder(driverId, wins), y = wins), show.legend = FALSE) + #creates the col graph
+  labs(title = "Fastest Q3 Drivers' wins in Abhu Dhabi GP (any year)") #adds labels
 ```
 > The fastest driver from Q3 with the most wins in Abu Dhabi is driverId #18, which is Jenson Button.
 
