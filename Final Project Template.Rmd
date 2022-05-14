@@ -60,8 +60,12 @@ driver_standings %>%
 ```
 > The fastest driver from Q3 with the most wins in Abu Dhabi is driverId #18, which is Jenson Button.
 
-## Graphic 2 - Which team had the most wins in the 2021 season?
+## Graphic 2 - Which team has the most all-time wins?
 Provide a brief description of your goal with your created graphic and what it demonstrates
+
+For this graphic, we wanted to see which F1 team currently has the most wins all-time. In order to do this, we needed to look at the provided "constructor_standings" data set to determine who has the most wins.  
+We did notice that there are some teams without wins, so we had to remove those first before we could sort the data in order.  
+The end result is a nice depiction of the top three teams in F1 to-date: The top team is Mercedes, followed by Ferrari, and finally McLaren.
 ```{r}
 #include code for any data manipulation and variable creation used to create the graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
 constructor_standings %>%
