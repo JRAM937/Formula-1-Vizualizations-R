@@ -1,12 +1,15 @@
 ---
 title: "Final Project"
-output: html_document
-author: "Group Member Names"
+output: github_document
+author: "Adrian Ortiz, Juan Ramirez JR"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, comment="")
 library(tidyverse)
+library(lubridate)
+library(scales)
+library(readr)
 #include other packages needed here
 ```
 
@@ -17,26 +20,41 @@ library(tidyverse)
 
 ```{r}
 #use read_csv() to import your new tidy data include any variable specifications here as needed
+driver_standings <- read.csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-07/driver_standings.csv")
+qualifying_times <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-07/qualifying.csv")
 ```
 
 ## Introduction
 Description of data and problem(s) you are solving.  Include data source(s) here, either through citation or link to webpage.
-
+>Question 1: Does fastestst driver in qualifying time #3 have the most wins in Abu Dhabi?
+>Question 2: Which team had the most wins in 2021?
 
 ## Graphic 1
 Provide a brief description of your goal with your created graphic and what it demonstrates
 ```{r}
 #include code for any data manipulation and variable creation used to create teh graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
+qualifying_times %>% 
+  mutate(q3 = replace(q3, q3 == "\\N", "0.0")) %>% 
+  filter(raceId == "17") %>% 
+  select(driverId, q3) %>% 
+  filter(q3 != "0.0") %>% 
+  arrange(q3) %>% 
+  write_csv("clean_times.csv")
+```
+
+```{r}
+driver_standings %>% 
+  filter(raceId == "17") %>% 
+  mutate(label = driverId) %>% 
+  write_csv("clean_drivers.csv") %>% 
+  
+ggplot(aes(x = driverId, y = wins)) +
+  geom_col(aes(fill = wins, x = driverId, y = wins)) +
+  geom_text(aes(label=label)) +
+  xlim(0, 25) 
 ```
 
 ## Graphic 2 - if two people in group
-Provide a brief description of your goal with your created graphic and what it demonstrates
-```{r}
-#include code for any data manipulation and variable creation used to create teh graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
-```
-
-
-## Graphic 3 - if three people in group
 Provide a brief description of your goal with your created graphic and what it demonstrates
 ```{r}
 #include code for any data manipulation and variable creation used to create teh graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
