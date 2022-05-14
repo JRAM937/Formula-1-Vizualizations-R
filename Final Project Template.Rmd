@@ -53,6 +53,7 @@ ggplot(aes(x = driverId, y = wins)) +
   geom_text(aes(label=label)) +
   xlim(0, 25) 
 ```
+> No, the driver who has the fastest Quaifying time #3 is not the one who has the most wins in the circuit Abu Dhabi.
 
 ## Graphic 2 - if two people in group
 Provide a brief description of your goal with your created graphic and what it demonstrates
