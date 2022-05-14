@@ -61,11 +61,11 @@ driver_standings %>%
 Provide a brief description of your goal with your created graphic and what it demonstrates
 ```{r}
 #include code for any data manipulation and variable creation used to create the graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
-constructor_standings %>% 
+constructor_standings %>%
   filter(wins != 0) %>% 
   arrange(desc(wins)) %>% 
   write_csv("clean_constructor_standings.csv") %>% 
-  
+
   top_n(10, wins) %>% 
   ggplot(aes(x = constructorId, y = wins)) +
     geom_col(aes(fill = wins, x = reorder(constructorId, wins), y = wins), show.legend = FALSE) +
