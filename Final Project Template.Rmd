@@ -22,17 +22,19 @@ library(readr)
 #use read_csv() to import your new tidy data include any variable specifications here as needed
 driver_standings <- read.csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-07/driver_standings.csv")
 qualifying_times <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-07/qualifying.csv")
+constructor_standings <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-07/constructor_standings.csv")
+constructors <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-09-07/constructors.csv")
 ```
 
 ## Introduction
 Description of data and problem(s) you are solving.  Include data source(s) here, either through citation or link to webpage.
->Question 1: Does fastestst driver in qualifying time #3 have the most wins in Abu Dhabi?
->Question 2: Which team had the most wins in 2021?
+>Question 1: Of the fastest drivers in Qualifying Round #3, who has the most wins in Abu Dhabi?
+>Question 2: Which team had the most wins in the 2021 season?
 
 ## Graphic 1
 Provide a brief description of your goal with your created graphic and what it demonstrates
 ```{r}
-#include code for any data manipulation and variable creation used to create teh graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
+#include code for any data manipulation and variable creation used to create the graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
 qualifying_times %>% 
   mutate(q3 = replace(q3, q3 == "\\N", "0.0")) %>% 
   filter(raceId == "17") %>% 
@@ -48,15 +50,26 @@ driver_standings %>%
   mutate(label = driverId) %>% 
   write_csv("clean_drivers.csv") %>% 
   
-ggplot(aes(x = driverId, y = wins)) +
-  geom_col(aes(fill = wins, x = driverId, y = wins)) +
-  geom_text(aes(label=label)) +
-  xlim(0, 25) 
+  top_n(3, wins) %>%
+  ggplot(aes(x = driverId, y = wins)) +
+  geom_col(aes(fill = wins, x = reorder(driverId, wins), y = wins), show.legend = FALSE) +
+  labs(title = "Fastest Q3 Drivers' wins in Abhu Dhabi GP (any year)")
 ```
-> No, the driver who has the fastest Quaifying time #3 is not the one who has the most wins in the circuit Abu Dhabi.
+> The fastest driver from Q3 with the most wins in Abu Dhabi is driverId #18, which is Jenson Button.
 
-## Graphic 2 - if two people in group
+## Graphic 2 - Which team had the most wins in the 2021 season?
 Provide a brief description of your goal with your created graphic and what it demonstrates
 ```{r}
-#include code for any data manipulation and variable creation used to create teh graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
+#include code for any data manipulation and variable creation used to create the graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
+constructor_standings %>% 
+  filter(wins != 0) %>% 
+  arrange(desc(wins)) %>% 
+  write_csv("clean_constructor_standings.csv") %>% 
+  
+  top_n(10, wins) %>% 
+  ggplot(aes(x = constructorId, y = wins)) +
+    geom_col(aes(fill = wins, x = reorder(constructorId, wins), y = wins), show.legend = FALSE) +
+    labs(title = "Teams with the most wins (Total)") + 
+    theme_classic()
+
 ```
