@@ -60,7 +60,8 @@ driver_standings %>%
   top_n(3, wins) %>% #gets the top 3 of wins
   ggplot(aes(x = driverId, y = wins)) + #starts the ggplot
   geom_col(aes(fill = wins, x = reorder(driverId, wins), y = wins), show.legend = FALSE) + #creates the col graph
-  labs(title = "Fastest Q3 Drivers' wins in Abhu Dhabi GP (any year)") #adds labels
+  labs(title = "Fastest Q3 Drivers' wins in Abhu Dhabi GP (any year)") + #adds labels
+  theme_classic()#apply classic theme :)
 ```
 > The fastest driver from Q3 with the most wins in Abu Dhabi is driverId #18, which is Jenson Button.
 
@@ -72,15 +73,15 @@ We did notice that there are some teams without wins, so we had to remove those 
 The end result is a nice depiction of the top three teams in F1 to-date: The top team is Mercedes, followed by Ferrari, and finally McLaren.
 ```{r}
 #include code for any data manipulation and variable creation used to create the graphic as well as the code for the graph creation - be sure to comment all code with description of steps being completed with each line of code
-constructor_standings %>%
-  filter(wins != 0) %>% 
-  arrange(desc(wins)) %>% 
-  write_csv("clean_constructor_standings.csv") %>% 
+constructor_standings %>% 
+  filter(wins != 0) %>% #remove any constructors with  wins
+  arrange(desc(wins)) %>% #arange constructors by wins in descending order (largest first)
+  write_csv("clean_constructor_standings.csv") %>% #Save as CSV
 
-  top_n(10, wins) %>% 
-  ggplot(aes(x = constructorId, y = wins)) +
-    geom_col(aes(fill = wins, x = reorder(constructorId, wins), y = wins), show.legend = FALSE) +
-    labs(title = "Teams with the most wins (Total)") + 
-    theme_classic()
+  top_n(10, wins) %>% #Take only the top 10 constructors based on wins
+  ggplot(aes(x = constructorId, y = wins)) + #Create a simple X-Y plane for the graph
+    geom_col(aes(fill = wins, x = reorder(constructorId, wins), y = wins), show.legend = FALSE) + #Colors are based on the number of wins. We also want to reorder the graph so that all columns are arranged from smallest to largest based on wins as well as hiding the legend.
+    labs(title = "Teams with the most wins (Total)") + #Add a nice title to the plot.
+    theme_classic() #apply classic theme :)
 
 ```
